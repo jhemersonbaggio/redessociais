@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Controle de Redes Sociais</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Controle de Tempo nas Redes</h1>
+    <p class="subtitle">Veja quanto você usa e entenda os impactos</p>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Quanto tempo você dedica por dia?</h2>
+      <form id="timeForm">
+        <div class="input-group">
+          <label for="instagram">Instagram (horas por dia):</label>
+          <input type="number" id="instagram" name="instagram" min="0" step="0.1" placeholder="Ex: 1.5" required>
+        </div>
+
+        <div class="input-group">
+          <label for="tiktok">TikTok (horas por dia):</label>
+          <input type="number" id="tiktok" name="tiktok" min="0" step="0.1" placeholder="Ex: 2.0" required>
+        </div>
+
+        <div class="input-group">
+          <label for="whatsapp">WhatsApp (horas por dia):</label>
+          <input type="number" id="whatsapp" name="whatsapp" min="0" step="0.1" placeholder="Ex: 1.0" required>
+        </div>
+
+        <div class="input-group">
+          <label for="other">Outra rede (horas por dia):</label>
+          <input type="number" id="other" name="other" min="0" step="0.1" placeholder="Ex: 0.5" required>
+        </div>
+
+        <button type="button" class="btn" id="calcBtn">Calcular Impacto</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Resultado</h2>
+      <div id="result">
+        <p>Preencha os campos acima e clique em “Calcular Impacto” para ver os efeitos possíveis.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Feito por alunos de Desenvolvimento de Sistemas</p>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
