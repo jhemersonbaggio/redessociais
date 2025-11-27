@@ -7,7 +7,7 @@
 }
 
 body {
-  background-color: #f0f2f5;
+  background-color: #e8f0fe;
   color: #333;
   display: flex;
   flex-direction: column;
@@ -41,7 +41,7 @@ header h1 {
   padding: 25px 20px;
   border-radius: 12px;
   margin-bottom: 25px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 h2 {
@@ -84,11 +84,13 @@ h2 {
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s, transform 0.2s;
+  margin-bottom: 15px;
 }
 
 .btn:hover {
   background: #701c9a;
+  transform: scale(1.03);
 }
 
 .result-text {
@@ -98,6 +100,21 @@ h2 {
 
 .result-text strong {
   color: #833ab4;
+}
+
+#gameCanvas {
+  background: linear-gradient(to bottom, #ccefff, #ffffff);
+  display: block;
+  margin: 10px auto;
+  border: 2px solid #333;
+  border-radius: 12px;
+}
+
+.game-instruction {
+  text-align: center;
+  margin-top: 8px;
+  font-size: 0.95em;
+  color: #555;
 }
 
 footer {
@@ -128,6 +145,6 @@ footer {
 
   .btn {
     width: 50%;
-    margin: 0 auto;
+    margin: 0 auto 15px;
   }
 }
