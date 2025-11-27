@@ -9,10 +9,11 @@
 <body>
   <header>
     <h1>Controle de Tempo nas Redes</h1>
-    <p class="subtitle">Veja quanto você usa e entenda os impactos</p>
+    <p class="subtitle">Veja quanto você usa, entenda os impactos e divirta-se!</p>
   </header>
 
   <main class="container">
+    <!-- Formulário -->
     <section class="card">
       <h2>Quanto tempo você dedica por dia?</h2>
       <form id="timeForm">
@@ -40,11 +41,20 @@
       </form>
     </section>
 
+    <!-- Resultado -->
     <section class="card">
       <h2>Resultado</h2>
       <div id="result">
         <p>Preencha os campos acima e clique em “Calcular Impacto” para ver os efeitos possíveis.</p>
       </div>
+    </section>
+
+    <!-- Mini-jogo -->
+    <section class="card">
+      <h2>Mini-jogo: Desvie das Redes Sociais!</h2>
+      <button id="startGameBtn" class="btn">Iniciar Jogo</button>
+      <canvas id="gameCanvas" width="400" height="500"></canvas>
+      <p class="game-instruction">Use as setas ← → para mover. Quanto mais você desvia, mais tempo livre você ganha!</p>
     </section>
   </main>
 
