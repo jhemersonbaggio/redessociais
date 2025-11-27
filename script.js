@@ -1,6 +1,6 @@
-// =========================
-// Cálculo de uso de redes
-// =========================
+// =======================================================
+// CÁLCULO DO USO DE REDES
+// =======================================================
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("timeForm");
   const btn = document.getElementById("calcBtn");
@@ -15,92 +15,90 @@ document.addEventListener("DOMContentLoaded", () => {
     const total = instagram + tiktok + whatsapp + other;
 
     let impacto = "";
-    if (total < 2) {
-      impacto = "Uso leve. Provavelmente pouco efeito negativo significativo no seu bem-estar.";
-    } else if (total < 4) {
-      impacto = "Uso moderado. Pode afetar sua produtividade e aumentar ansiedade leve, especialmente se usado à noite.";
-    } else if (total < 6) {
-      impacto = "Uso alto. Pode haver impacto no sono, na autoestima e na saúde mental, como aumento de ansiedade ou comparação social.";
-    } else {
-      impacto = "Uso muito alto. Alto risco de efeitos negativos significativos, como dependência, pior qualidade de sono, ansiedade ou isolamento social.";
-    }
-
-    let dicas = [];
-    dicas.push("Defina limites diários específicos para cada rede.");
-    dicas.push("Use temporizadores ou alarmes para monitorar o tempo.");
-    dicas.push("Faça pausas regulares: saia do app, ande, respire.");
-    dicas.push("Evite usar redes sociais antes de dormir para melhorar sua qualidade de sono.");
-    if (total >= 4) dicas.push("Considere desativar notificações ou usar modos de foco/no-distúrbios.");
-    if (total >= 6) dicas.push("Avalie reduzir gradualmente o uso ou buscar atividades alternativas (hobbies, exercício, leitura).");
+    if (total < 2) impacto = "Uso leve!";
+    else if (total < 4) impacto = "Uso moderado! Cuidado.";
+    else if (total < 6) impacto = "Uso alto. Afeta sono e foco.";
+    else impacto = "Uso MUITO alto! Considere reduzir.";
 
     resultDiv.innerHTML = `
-      <p class="result-text"><strong>Total diário estimado: ${total.toFixed(1)} h</strong></p>
-      <p class="result-text">${impacto}</p>
-      <hr>
-      <p class="result-text"><strong>Dicas para equilibrar:</strong></p>
-      <ul class="result-text">
-        ${dicas.map(d => `<li>${d}</li>`).join("")}
-      </ul>
-      <hr>
-      <p class="result-text"><em>Lembre-se:</em> uso moderado de redes sociais é normal, mas permanecer consciente sobre quanto tempo você passa pode proteger sua saúde mental.</p>
+      <p><strong>Total diário: ${total.toFixed(1)}h</strong></p>
+      <p>${impacto}</p>
     `;
   });
 });
 
-// =========================
-// Mini-jogo das redes sociais (melhorado)
-// =========================
+
+// =======================================================
+// JOGO - CORRIDA CONTRA AS REDES
+// =======================================================
+
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
-const startBtn = document.getElementById("startGameBtn");
 
-const jogador = { x: 180, y: 450, width: 40, height: 40 };
-const icones = [];
-let tempoLivre = 0;
-let faltaFoco = 0;
+function ajustarCanvas() {
+  if (window.innerWidth < 500) {
+    canvas.width = window.innerWidth * 0.9;
+    canvas.height = canvas.width * 1.4;
+  } else {
+    canvas.width = 400;
+    canvas.height = 560;
+  }
+}
+ajustarCanvas();
+window.addEventListener("resize", ajustarCanvas);
+
+// Jogador
+const carro = {
+  x: canvas.width / 2 - 20,
+  y: canvas.height - 80,
+  width: 40,
+  height: 40,
+  emoji: "🚗"
+};
+
+// Obstáculos
+const obstaculos = [];
+let tempoUtil = 0;
+let tempoPerdido = 0;
 let jogoAtivo = false;
-let gerarIconeInterval;
+let spawnInterval = null;
+let velocidadeBase = 4;
 
-// Criar ícone aleatório
-function criarIcone() {
-  const tipos = [
-    { emoji: "📸", cor: "#833ab4" }, // Instagram
-    { emoji: "💬", cor: "#25D366" }, // WhatsApp
-    { emoji: "🎵", cor: "#69C9D0" }  // TikTok
-  ];
-  const escolha = tipos[Math.floor(Math.random() * tipos.length)];
-  const icone = {
-    x: Math.random() * (canvas.width - 30),
-    y: 0,
+// Criar obstáculo
+function criarObstaculo() {
+  const tipos = ["📸", "🎵", "💬", "🤳", "❤️", "⭐"];
+  obstaculos.push({
+    x: Math.random() * (canvas.width - 40),
+    y: -40,
     size: 40,
-    emoji: escolha.emoji,
-    cor: escolha.cor,
-    velocidade: 2 + Math.random() * 3
-  };
-  icones.push(icone);
+    emoji: tipos[Math.floor(Math.random() * tipos.length)],
+    velocidade: velocidadeBase + Math.random() * 3
+  });
+  velocidadeBase += 0.05; // deixa o jogo mais difícil com o tempo
 }
 
-// Detectar colisão
-function colisao(j, i) {
-  return j.x < i.x + i.size &&
-         j.x + j.width > i.x &&
-         j.y < i.y + i.size &&
-         j.y + j.height > i.y;
+// Colisão
+function colidiu(a, b) {
+  return (
+    a.x < b.x + b.size &&
+    a.x + a.width > b.x &&
+    a.y < b.y + b.size &&
+    a.y + a.height > b.y
+  );
 }
 
-// Finalizar jogo
-function finalizarJogo() {
+// Final do jogo
+function finalizar() {
   jogoAtivo = false;
-  clearInterval(gerarIconeInterval);
-  icones.length = 0;
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  clearInterval(spawnInterval);
+  obstaculos.length = 0;
 
   ctx.fillStyle = "#333";
-  ctx.font = "20px Arial";
+  ctx.font = "24px Arial";
   ctx.textAlign = "center";
-  ctx.fillText("Fim do Jogo!", canvas.width / 2, canvas.height / 2 - 30);
-  ctx.fillText(`Tempo Livre: ${tempoLivre}`, canvas.width / 2, canvas.height / 2);
-  ctx.fillText(`Falta de Foco: ${faltaFoco}`, canvas.width / 2, canvas.height / 2 + 30);
+  ctx.fillText("Fim da Corrida!", canvas.width/2, canvas.height/2 - 40);
+  ctx.fillText(`Tempo útil: ${tempoUtil}`, canvas.width/2, canvas.height/2);
+  ctx.fillText(`Tempo perdido: ${tempoPerdido}`, canvas.width/2, canvas.height/2 + 40);
 }
 
 // Loop do jogo
@@ -109,57 +107,74 @@ function atualizar() {
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Desenhar jogador
-  ctx.fillStyle = "blue";
-  ctx.fillRect(jogador.x, jogador.y, jogador.width, jogador.height);
+  // Carro
+  ctx.font = "40px Arial";
+  ctx.fillText(carro.emoji, carro.x, carro.y + 40);
 
-  // Atualizar e desenhar ícones
-  icones.forEach((i, index) => {
-    i.y += i.velocidade;
-    ctx.font = `${i.size}px Arial`;
-    ctx.fillText(i.emoji, i.x, i.y);
+  // Obstáculos
+  obstaculos.forEach((o, i) => {
+    o.y += o.velocidade;
+    ctx.font = `${o.size}px Arial`;
+    ctx.fillText(o.emoji, o.x, o.y);
 
-    if (colisao(jogador, i)) {
-      faltaFoco += 1;
-      icones.splice(index, 1);
-    } else if (i.y > canvas.height) {
-      tempoLivre += 1;
-      icones.splice(index, 1);
+    if (colidiu(carro, o)) {
+      tempoPerdido++;
+      obstaculos.splice(i, 1);
+    } else if (o.y > canvas.height) {
+      tempoUtil++;
+      obstaculos.splice(i, 1);
     }
   });
 
-  // Mostrar pontuação
+  // HUD
+  ctx.font = "18px Arial";
   ctx.fillStyle = "green";
-  ctx.font = "16px Arial";
-  ctx.textAlign = "left";
-  ctx.fillText(`Tempo Livre: ${tempoLivre}`, 10, 20);
+  ctx.fillText(`Tempo útil: ${tempoUtil}`, 10, 25);
   ctx.fillStyle = "red";
-  ctx.fillText(`Falta de Foco: ${faltaFoco}`, 10, 40);
+  ctx.fillText(`Tempo perdido: ${tempoPerdido}`, 10, 45);
 
-  // Checar condição de término
-  if (tempoLivre + faltaFoco >= 24) {
-    finalizarJogo();
+  if (tempoUtil + tempoPerdido >= 24) {
+    finalizar();
     return;
   }
 
   requestAnimationFrame(atualizar);
 }
 
-// Controles do jogador
+// Controles - computador
 document.addEventListener("keydown", (e) => {
   if (!jogoAtivo) return;
-  if (e.key === "ArrowLeft") jogador.x -= 10;
-  if (e.key === "ArrowRight") jogador.x += 10;
-  jogador.x = Math.max(0, Math.min(canvas.width - jogador.width, jogador.x));
+  if (e.key === "ArrowLeft") carro.x -= 20;
+  if (e.key === "ArrowRight") carro.x += 20;
+  carro.x = Math.max(0, Math.min(canvas.width - carro.width, carro.x));
+});
+
+// Controles - celular
+let toqueInicial = null;
+
+canvas.addEventListener("touchstart", (e) => {
+  toqueInicial = e.touches[0].clientX;
+});
+
+canvas.addEventListener("touchmove", (e) => {
+  const toqueAtual = e.touches[0].clientX;
+  const delta = toqueAtual - toqueInicial;
+  carro.x += delta * 0.5;
+  carro.x = Math.max(0, Math.min(canvas.width - carro.width, carro.x));
+  toqueInicial = toqueAtual;
 });
 
 // Iniciar jogo
-startBtn.addEventListener("click", () => {
+document.getElementById("startGameBtn").addEventListener("click", () => {
   if (jogoAtivo) return;
+
+  tempoUtil = 0;
+  tempoPerdido = 0;
+  velocidadeBase = 4;
+  carro.x = canvas.width/2 - carro.width/2;
+  obstaculos.length = 0;
+
   jogoAtivo = true;
-  tempoLivre = 0;
-  faltaFoco = 0;
-  icones.length = 0;
-  gerarIconeInterval = setInterval(criarIcone, 1000);
+  spawnInterval = setInterval(criarObstaculo, 800);
   atualizar();
 });
