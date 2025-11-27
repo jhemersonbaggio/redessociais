@@ -18,23 +18,23 @@
       <h2>Quanto tempo você dedica por dia?</h2>
       <form id="timeForm">
         <div class="input-group">
-          <label for="instagram">Instagram (horas por dia):</label>
-          <input type="number" id="instagram" name="instagram" min="0" step="0.1" placeholder="Ex: 1.5" required>
+          <label for="instagram">Instagram (h/dia):</label>
+          <input type="number" id="instagram" min="0" step="0.1" required />
         </div>
 
         <div class="input-group">
-          <label for="tiktok">TikTok (horas por dia):</label>
-          <input type="number" id="tiktok" name="tiktok" min="0" step="0.1" placeholder="Ex: 2.0" required>
+          <label for="tiktok">TikTok (h/dia):</label>
+          <input type="number" id="tiktok" min="0" step="0.1" required />
         </div>
 
         <div class="input-group">
-          <label for="whatsapp">WhatsApp (horas por dia):</label>
-          <input type="number" id="whatsapp" name="whatsapp" min="0" step="0.1" placeholder="Ex: 1.0" required>
+          <label for="whatsapp">WhatsApp (h/dia):</label>
+          <input type="number" id="whatsapp" min="0" step="0.1" required />
         </div>
 
         <div class="input-group">
-          <label for="other">Outra rede (horas por dia):</label>
-          <input type="number" id="other" name="other" min="0" step="0.1" placeholder="Ex: 0.5" required>
+          <label for="other">Outra Rede (h/dia):</label>
+          <input type="number" id="other" min="0" step="0.1" required />
         </div>
 
         <button type="button" class="btn" id="calcBtn">Calcular Impacto</button>
@@ -45,16 +45,21 @@
     <section class="card">
       <h2>Resultado</h2>
       <div id="result">
-        <p>Preencha os campos acima e clique em “Calcular Impacto” para ver os efeitos possíveis.</p>
+        <p>Preencha os campos e clique em Calcular Impacto.</p>
       </div>
     </section>
 
-    <!-- Mini-jogo -->
+    <!-- Jogo -->
     <section class="card">
-      <h2>Mini-jogo: Desvie das Redes Sociais!</h2>
+      <h2>Mini-jogo: Corrida contra as Redes!</h2>
       <button id="startGameBtn" class="btn">Iniciar Jogo</button>
-      <canvas id="gameCanvas" width="400" height="500"></canvas>
-      <p class="game-instruction">Use as setas ← → para mover. Quanto mais você desvia, mais tempo livre você ganha!</p>
+
+      <canvas id="gameCanvas"></canvas>
+
+      <p class="game-instruction">
+        Use ← → ou deslize o dedo para mover o carro 🚗.  
+        Desvie para ganhar tempo útil!
+      </p>
     </section>
   </main>
 
@@ -62,6 +67,6 @@
     <p>Feito por alunos de Desenvolvimento de Sistemas</p>
   </footer>
 
-  <script src="script.js" defer></script>
+  <script src="script.js"></script>
 </body>
 </html>
